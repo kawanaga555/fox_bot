@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
+import random
 
 class Main(Cog_Extension):
     @commands.command()  
@@ -31,7 +32,7 @@ class Main(Cog_Extension):
                 if 0 not in count[1:a+1]:
                     sum = sum + 1
 
-            await ctx.send(f'{a}Pick up，每一Pick up都是{b*100}%的機率下，{c}人去抽{d}連抽的情況下。\n有{sum}成功抽齊了。')
+            await ctx.send(f'{a}Pick up，每一Pick up都是{b*100}%的機率下，{c}人去抽{d}連抽的情況下。\n有{sum}人成功抽齊了，佔總體{round(sum/c*100, 1)}%。')
         else :
             await ctx.send('參數錯誤')
 
