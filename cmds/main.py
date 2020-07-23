@@ -5,34 +5,36 @@ import random
 
 class Main(Cog_Extension):
     @commands.command()  
-    async def 來抽卡(self, ctx, a: int, b: float, c: int, d: int):
-        if a > 0 and a <= 3 and b > 0 and b <= 100 and c > 0 and c <= 5000 and d > 0 and d <= 1000 :
+    async def 來抽卡(self, ctx, pickup: int, Probability: float, people: int, times: int):
+        if pickup > 0 and pickup <= 3 and Probability > 0 and Probability <= 100 and people > 0 and people <= 5000 and times > 0 and times <= 1000 :
             sum = 0
-            b = b/100
+            Probability = Probability/100
             pool = ['other','PU1','PU2','PU3']
-            if a == 1:
-                weights = [1-b,b,0,0]
-            elif a == 2:
-                weights = [1-b*2,b,b,0]
-            elif a == 3:
-                weights = [1-b*3,b,b,b]
+            if pickup == 1:
+                weights = [1-Probability,Probability,0,0]
+            elif pickup == 2:
+                weights = [1-Probability*2,Probability,Probability,0]
+            else :
+                weights = [1-Probability*3,Probability,Probability,Probability]
 
-            for person in range(c):
+            for person in range(people):
                 count = [0,0,0,0]
-                cards = random.choices(pool,weights,k=d)
+                cards = random.choices(pool, weights, k=times)
                 for card in cards:
-                    if card == 'PU1':
+                    if card == 'other':
+                        count[0] += 1
+                    elif card == 'PU1':
                         count[1] += 1
                     elif card == 'PU2':
                         count[2] += 1
                     elif card == 'PU3':
                         count[3] += 1
-                    else :
-                        count[0] += 1
-                if 0 not in count[1:a+1]:
+                        
+                if 0 not in count[1:pickup+1]:
                     sum = sum + 1
 
-            await ctx.send(f'{a}Pick up，每一Pick up都是{b*100}%的機率下，{c}人去抽{d}連抽的情況下。\n有{sum}人成功抽齊了，佔總體{round(sum/c*100, 1)}%。')
+            await ctx.send(f'{pickup}Pick up，每一Pick up都是{Probability*100}%的機率下，{people}人去抽{times}連抽的情況下。\n\
+有{sum}人成功抽齊了，佔總體{round(sum/people*100, 1)}%。')
         else :
             await ctx.send('參數錯誤')
 
